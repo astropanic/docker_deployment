@@ -64,12 +64,7 @@
 				</section>
 
         <section>
-          <h2>Agenda</h2>
-          <ul>
-            <li>Der Ist-Zustand</li> 
-            <li>Das Problem</li>
-            <li>Eine mögliche Lösung</li>
-          </ul>
+          <img height="600" src="img/docker_deployment_theory.png" alt="first deployment">
         </section>
 				<section>
           <h2>Mein erstes Deployment</h2>
@@ -87,6 +82,7 @@
           <h2>Versionskontrolle V2</h2>
           <ul>
             <li>Ruby</li>
+            <li>Rails / Sinatra</li>
             <li>NodeJS</li>
             <li>LibXML</li>
             <li>wkhtmltopdf</li>
@@ -97,73 +93,189 @@
         <section>
           <h2>Versionskontrolle V3</h2>
           <ul>
-            <li>Application Servers (Passenger/Unicorn...) </li>
+            <li>Webservers (Nginx/Apache) </li>
+            <li>Application Servers (Passenger/Unicorn) </li>
             <li>Session storage (Redis)</li>
             <li>Message Bus (RabbitMQ)</li>
             <li>Workers</li>
+            <li>Caching</li>
             <li>Queue (Resque/Sidekiq)</li>
+            <li>Index (Solr/Elasticsearch)</li>
+            <li>Datenbank (PostgreSQL, MongoDB)</li>
+            <li>Logging (Logstash, Log4J)</li>
+            <li>Monitoring (Munin, Nagios)</li>
+            <li>Prozesssteuerung (Monit, Supervisor)</li>
           </ul>
         </section>
+
+        
         <section>
-          <h2>Kompatibiltät</h2>
-          <p><strong>Develper</strong>: "It works on my machine, just not on the server."</p>
-          <p><strong>CTO</strong>: "Ok, backup your mail. We're putting your laptop into production."</p>
-        </section>
-        <section>
-          <h2>Der Ist-Zustand</h2>
+          <h2>Das Problem</h2>
           <ul>
             <li>Grosse Anzahl an Diensten die laufen müssen</li>
-            <li>Inkompabilität (development, testing, staging, production)</li>
-            <li>Manche Dienste sind abhängig voneinander</li>
-            <li>Konfigurationsänderungen / Upgrades sind problematisch</li>
+            <li>Manche (fast alle) Dienste sind abhängig voneinander</li>
+            <li><strong>Inkompabilität von development, staging, production</strong></li>
+            <li><strong>Inkompabilität von Servern (Snowflake)</strong></li>
+            <li><strong>Deployments dauern lange</strong></li>
+            <li><strong>Konfigurationsänderungen / Upgrades sind problematisch</strong></li>
           </ul>
         </section>
 
+        <section>
+          <h2>Inkompatibiltät</h2>
+          <p><strong>Developer</strong>: "Es funktioniert auf meiner Kiste, blos nicht auf dem Server."</p>
+          <p class="fragment"><strong>Chef</strong>: "Ok, mach eine Kopie von deinen Emails, dein Laptop get auf Produktion."</p>
+        </section>
 
 				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+          <img height="600" src="img/docker.png" alt="docker" />
 				</section>
 
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
+        <section>
+          <h2>Teorie</h2>
+          <ul>
+            <li>Die Applikation wird in ein Image verpakt.</li>
+            <li>Das erstellte Image kann transportiert und zum laufen gebracht werden</li>
+            <li>Das Image funktioniert genauso auf meinem Laptop, auf deinem Rechner, und auf dem Server.</li>
+            <li><strong><strike>Inkompabilität von development, staging, production</strike>?!</strong></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Praxis</h2>
+          <ul>
+            <li>Die notwendigen Services werden in Images verpakt.</li>
+            <li>Die erstellten Images können transportiert und zum laufen gebracht werden</li>
+            <li>Ich starte auf meinem Laptop Services welche ich brauche.</li>
+            <li><strong><strike>Inkompabilität von development, staging, production</strike> !!!</strong></li>
+            <li><strong><strike>Inkompabilität von Servern (Snowflake)</strike> !!!</strong></li>
+            <li><strong><strike>Deployments dauern lange</strike> !!!</strong></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Das Problem</h2>
+          <ul>
+            <li>Grosse Anzahl an Diensten die laufen müssen</li>
+            <li>Manche (fast alle) Dienste sind abhängig voneinander</li>
+            <li>Konfigurationsänderungen / Upgrades sind problematisch</li>
+            <li>Notwendige Seperation (Elasticsearch / MongoDB)</li>
+            <li>Cluster</li>
+          </ul>
+        </section>
+
+        <section>
+          <img src="img/coreos.png" alt="coreos" />
+        </section>
+
+        <section>
+          <ul>
+            <li>Auf jeder CoreOs Maschine ist Docker installiert</li>
+            <li>Die Container mit der Applikation und den Services werden mit "Fleet" auf die jeweiligen Maschinen verteilt und gesteuert</li>
+            <li>Die Container kommunizieren miteinander durch "etcd", ein High Available Key Value Store</li>
+        </section>
+        <section>
+          <img src="img/coreos_cluster.png" alt="coreos" />
+        </section>
+
+        <section>
+          <h2>Etcd</h2>
+          <ul>
+            <li>Auf jedem CoreOS Host verfügbar</li>
+            <li>Verteilte Konfiguration</li>
+            <li>Service Discovery</li>
+          </ul>
+            <pre><code class="bash">curl -L http://127.0.0.1:4001/v2/keys/foo -XPUT -d value="bar"
+curl -L http://127.0.0.1:4001/v2/keys/foo</code></pre>
+        </section>
+        <section>
+          <h2>Fleet</h2>
+          <ul>
+            <li>Ein Distributed Init System</li>
+            <li>Systemd für Cluster anstatt einer Maschine</li>
+            <li>Benutzt Unit Dateien</li>
+          </ul>
+          <pre><code class="bash">fleetctl start examples/apache.service
+Unit apache.service launched on 113f16a7.../172.17.8.103</code></pre>
+        </section>
+
+        <section>
+          <h2>Unit Dateien</h2>
+          <ul>
+            <li>Definieren was ich will, und wie es Fleet machen soll</li>
+          </ul>
+            <pre><code class="ini">[Unit]
+Description=My Apache Frontend
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill apache1
+ExecStartPre=-/usr/bin/docker rm apache1
+ExecStartPre=/usr/bin/docker pull coreos/apache
+ExecStart=/usr/bin/docker run -rm --name apache1 -p 80:80 coreos/apache /usr/sbin/apache2ctl -D FOREGROUND
+ExecStop=/usr/bin/docker stop apache1
+
+[X-Fleet]
+X-Conflicts=apache.*.service</pre></code>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Docker Ambassador Pattern / Sidekick</h2>
+          <pre><code class="ini">[Unit]
+Description=Announce Apache1
+BindsTo=apache.1.service
+
+[Service]
+ExecStart=/bin/sh -c "while true; do etcdctl set /services/website/apache1 '{ \"host\": \"%H\", \"port\": 80, \"version\": \"52c7248a14\" }' --ttl 60;sleep 45;done"
+ExecStop=/usr/bin/etcdctl rm /services/website/apache1
+
+[X-Fleet]
+X-ConditionMachineOf=apache.1.service</pre></code>
+        <ul>
+            <li><strike><strong>Konfigurationsänderungen / Upgrades sind problematisch</strong></strike> !!!</li>
+        </section>
+        <section>
+          <img src="img/coreos_example.png" alt="coreos" />
+        </section>
+
+        <section>
+          <h2>Deployment Mögligkeiten</h2>
+          <ul>
+            <li>Deployment einer Applikation / Service auf eine Maschine anhand Metadaten</li>
+            <li>Deployment einer Applikation / Service global auf den ganzen Cluster</li>
+            <li>Deployment einer Applikation / Service irgendwo auf den Cluster</li>
+          </ul>
 				</section>
 
+        <section>
+          <h2>Rolling deployment / zero downtime</h2>
+          <ul>
+            <li>Das neue Docker Image aus dem Registry ziehen</li>
+            <li>Einen Appserver Container aus dem Loadbalancer rausnehmen (etcd)</li>
+            <li>Den Container beenden</li>
+            <li>Einen Container aus dem neuen Image starten</li>
+            <li>Nach dem start von dem Container, diesen wieder im Loadbalancer einbringen (etcd)</li>
+            <li>Wiederholen, bis alle Nodes hinter dem Loadbalancer aktualisiert wurden</li>
+          </ul>
+        </section>
 
-				<section>
-					<h2>Stellar Links</h2>
-					<ul>
-						<li><a href="http://slid.es">Try the online editor</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on GitHub</a></li>
-						<li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
-					</ul>
-				</section>
-
-				<section>
-					<h1>THE END</h1>
-					<h3>BY Hakim El Hattab / hakim.se</h3>
-				</section>
-
+        <section>
+          <h2>Geignet für Produktion ?</h2>
+          <img src="img/cardio.jpg" alt="coreos" />
+          <img src="img/paint.jpg" alt="coreos" />
+        </section>
+        <section>
+          <h2>Canary Release</h2>
+          <img src="img/canary_release.png" alt="canary_release" />
+          <img src="img/canary_release2.png" alt="canary_release" />
+        </section>
+        <section>
+          <img src="img/docker_hamburg.png" alt="docker_hamburg" />
+        </section>
+        <section>
 			</div>
 
 		</div>
