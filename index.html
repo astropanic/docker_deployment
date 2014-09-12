@@ -247,17 +247,20 @@ X-ConditionMachineOf=apache.1.service</pre></code>
             <li>Deployment einer Applikation / Service auf eine Maschine anhand Metadaten</li>
             <li>Deployment einer Applikation / Service global auf den ganzen Cluster</li>
             <li>Deployment einer Applikation / Service irgendwo auf den Cluster</li>
+            <li>Skalierung anhand der Resourcen</li>
           </ul>
 				</section>
 
         <section>
           <h2>Rolling deployment / zero downtime</h2>
           <ul>
+            <li>Nicht destruktive Datenbank-Migrationen durchführen</li>
+            <li>Assets zür Verfügung stellen</li>
             <li>Das neue Docker Image aus dem Registry ziehen</li>
             <li>Einen Appserver Container aus dem Loadbalancer rausnehmen (etcd)</li>
-            <li>Den Container beenden</li>
             <li>Einen Container aus dem neuen Image starten</li>
             <li>Nach dem start von dem Container, diesen wieder im Loadbalancer einbringen (etcd)</li>
+            <li>Den alten Container beenden</li>
             <li>Wiederholen, bis alle Nodes hinter dem Loadbalancer aktualisiert wurden</li>
           </ul>
         </section>
@@ -275,7 +278,6 @@ X-ConditionMachineOf=apache.1.service</pre></code>
         <section>
           <img src="img/docker_hamburg.png" alt="docker_hamburg" />
         </section>
-        <section>
 			</div>
 
 		</div>
