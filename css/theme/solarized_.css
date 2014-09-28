@@ -289,3 +289,8 @@ body {
  *********************************************/
 .reveal .slide-number {
   color: #268bd2; }
+
+.pic {
+  width:800px;
+  height:600px;
+}
